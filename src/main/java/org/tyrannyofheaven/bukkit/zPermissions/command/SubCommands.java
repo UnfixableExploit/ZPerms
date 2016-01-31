@@ -225,7 +225,8 @@ public class SubCommands {
         }
     }
 
-    @Command(value="check", description="Check against effective permissions")
+    @SuppressWarnings("deprecation")
+	@Command(value="check", description="Check against effective permissions")
     @Require("zpermissions.check")
     public void check(CommandSender sender, @Option("permission") String permission, @Option(value="player", optional=true, completer="player") String playerName) {
         Player player;
@@ -261,7 +262,8 @@ public class SubCommands {
         sendMessage(sender, colorize("{AQUA}%s{YELLOW} does not set {GOLD}%s"), player.getName(), permission);
     }
 
-    @Command(value="inspect", description="Inspect effective permissions")
+    @SuppressWarnings("deprecation")
+	@Command(value="inspect", description="Inspect effective permissions")
     @Require("zpermissions.inspect")
     public void inspect(CommandSender sender, @Option(value={"-f", "--filter"}, valueName="filter") String filter, @Option({"-v", "--verbose"}) boolean verbose, @Option(value="player", optional=true, completer="player") String playerName) {
         Player player;

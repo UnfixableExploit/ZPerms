@@ -228,7 +228,8 @@ public class PlayerCommands extends CommonCommands {
         ToHMessageUtils.displayLines(plugin, sender, lines);
     }
 
-    @Command(value={"settemp", "temp", "tmp"}, description="Set a temporary permission")
+    @SuppressWarnings("deprecation")
+	@Command(value={"settemp", "temp", "tmp"}, description="Set a temporary permission")
     @Require("zpermissions.player.manage")
     public void settemp(CommandSender sender, @Session("entityName") String playerName, @Option("permission") String permission, @Option(value="value", optional=true) Boolean value, @Option(value={"-t", "--timeout"}, valueName="timeout") Integer timeout) {
         Player player = Bukkit.getPlayer(playerName);
@@ -256,7 +257,8 @@ public class PlayerCommands extends CommonCommands {
     @Command(value="has", description="Bukkit hasPermission() check")
     @Require("zpermissions.player.view")
     public void has(CommandSender sender, @Session("entityName") String playerName, @Option("permission") String permission) {
-        Player player = Bukkit.getPlayer(playerName);
+        @SuppressWarnings("deprecation")
+		Player player = Bukkit.getPlayer(playerName);
         if (player == null) {
             sendMessage(sender, colorize("{RED}Player is not online."));
             abortBatchProcessing();

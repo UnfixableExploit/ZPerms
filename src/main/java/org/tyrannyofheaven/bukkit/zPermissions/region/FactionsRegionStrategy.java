@@ -29,10 +29,10 @@ import org.tyrannyofheaven.bukkit.util.ToHLoggingUtils;
 import org.tyrannyofheaven.bukkit.zPermissions.ZPermissionsCore;
 
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.entity.BoardColls;
+import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.UPlayer;
-import com.massivecraft.mcore.ps.PS;
+import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.massivecore.ps.PS;
 
 /**
  * RegionStrategy implementation for Factions.
@@ -112,8 +112,8 @@ public class FactionsRegionStrategy implements RegionStrategy, Listener {
     private static class FactionsHelper {
 
         private static Set<String> getRegions(Location location, Player player) {
-            Faction faction = BoardColls.get().getFactionAt(PS.valueOf(location));
-            UPlayer uplayer = UPlayer.get(player);
+            Faction faction = BoardColl.get().getFactionAt(PS.valueOf(location));
+            MPlayer uplayer = MPlayer.get(player);
             if (faction != null && uplayer != null) {
                 Rel rel = uplayer.getRelationTo(faction);
                 if (rel != null) {

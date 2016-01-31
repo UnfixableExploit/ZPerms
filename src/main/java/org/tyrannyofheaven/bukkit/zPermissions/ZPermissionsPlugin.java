@@ -24,7 +24,6 @@ import static org.tyrannyofheaven.bukkit.util.ToHMessageUtils.colorize;
 import static org.tyrannyofheaven.bukkit.util.ToHMessageUtils.sendMessage;
 import static org.tyrannyofheaven.bukkit.util.ToHStringUtils.hasText;
 import static org.tyrannyofheaven.bukkit.util.command.reader.CommandReader.abortBatchProcessing;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,7 +39,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -92,9 +90,7 @@ import org.tyrannyofheaven.bukkit.zPermissions.model.PermissionRegion;
 import org.tyrannyofheaven.bukkit.zPermissions.model.PermissionWorld;
 import org.tyrannyofheaven.bukkit.zPermissions.model.UuidDisplayNameCache;
 import org.tyrannyofheaven.bukkit.zPermissions.region.FactionsRegionStrategy;
-import org.tyrannyofheaven.bukkit.zPermissions.region.FactoidRegionStrategy;
 import org.tyrannyofheaven.bukkit.zPermissions.region.RegionStrategy;
-import org.tyrannyofheaven.bukkit.zPermissions.region.ResidenceRegionStrategy;
 import org.tyrannyofheaven.bukkit.zPermissions.region.WorldGuardRegionStrategy;
 import org.tyrannyofheaven.bukkit.zPermissions.service.DefaultPlayerPrefixHandler;
 import org.tyrannyofheaven.bukkit.zPermissions.service.PlayerPrefixHandler;
@@ -677,15 +673,8 @@ public class ZPermissionsPlugin extends JavaPlugin implements ZPermissionsCore, 
         // WorldGuard
         regionStrategy = new WorldGuardRegionStrategy(this, getZPermissionsCore());
         strategies.put(regionStrategy.getName(), regionStrategy);
-
-        // Additional region managers are registered here.
-        regionStrategy = new ResidenceRegionStrategy(this, getZPermissionsCore());
-        strategies.put(regionStrategy.getName(), regionStrategy);
         
         regionStrategy = new FactionsRegionStrategy(this, getZPermissionsCore());
-        strategies.put(regionStrategy.getName(), regionStrategy);
-
-        regionStrategy = new FactoidRegionStrategy(this, getZPermissionsCore());
         strategies.put(regionStrategy.getName(), regionStrategy);
 
         // Run through list in preference order
