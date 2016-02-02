@@ -1,5 +1,5 @@
 # ZPerms (Fork of ZPermissions)
-Aims to use the latest versions of (Vault, MassiveCraft-Factions, WorldGuard + Over)
+Aims to use the latest versions of (Vault, MassiveCraft-Factions, WorldGuard + Other)
 Going to try to make faster but less intensive but is good as is :)
 
 
