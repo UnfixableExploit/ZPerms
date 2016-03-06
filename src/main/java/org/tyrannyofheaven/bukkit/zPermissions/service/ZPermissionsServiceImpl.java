@@ -30,6 +30,8 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.tyrannyofheaven.bukkit.util.transaction.TransactionCallback;
 import org.tyrannyofheaven.bukkit.util.transaction.TransactionCallbackWithoutResult;
@@ -150,7 +152,7 @@ public class ZPermissionsServiceImpl implements ZPermissionsService {
 
         OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
         if (player == null) return Collections.emptyList();
-        UUID uuid = player.getUniqueId();
+        UUID uuid = ((Entity) player).getUniqueId();
 
         return getPlayerAssignedGroups(uuid);
     }
@@ -184,7 +186,7 @@ public class ZPermissionsServiceImpl implements ZPermissionsService {
 
         OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
         if (player == null) return Collections.emptySet();
-        UUID uuid = player.getUniqueId();
+        UUID uuid = ((Entity) player).getUniqueId();
 
         return getPlayerGroups(uuid);
     }
@@ -258,7 +260,7 @@ public class ZPermissionsServiceImpl implements ZPermissionsService {
 
         OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
         if (player == null) return Collections.emptyMap();
-        UUID uuid = player.getUniqueId();
+        UUID uuid = ((Entity) player).getUniqueId();
         
         return getPlayerPermissions(worldName, regionNames, uuid);
     }
@@ -354,7 +356,7 @@ public class ZPermissionsServiceImpl implements ZPermissionsService {
 
         OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
         if (player == null) return null;
-        UUID uuid = player.getUniqueId();
+        UUID uuid = ((Entity) player).getUniqueId();
 
         return getPlayerMetadata(uuid, metadataName, type);
     }
@@ -470,7 +472,7 @@ public class ZPermissionsServiceImpl implements ZPermissionsService {
 
         OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
         if (player == null) return null;
-        UUID uuid = player.getUniqueId();
+        UUID uuid = ((Entity) player).getUniqueId();
 
         return getPlayerPrimaryGroup(uuid);
     }

@@ -514,7 +514,7 @@ public class SubCommands {
         List<String> header = new ArrayList<>();
 
         // Parse qualifiers for first player
-        Player p = Bukkit.getPlayer(uuid);
+        Player p = Bukkit.getPlayer(uuid.toString());
         final String worldName;
         final Set<String> regionNames;
         if (otherPlayer != null) {

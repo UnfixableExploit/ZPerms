@@ -1,5 +1,5 @@
-name: zPermissions
-version: MC1.8.8-V1
+name: ZPerms
+version: MC1.9-Build-Beta
 main: org.tyrannyofheaven.bukkit.zPermissions.ZPermissionsPlugin
 description: Superperms implementation with Bukkit database backend
 author: ZerothAngel
