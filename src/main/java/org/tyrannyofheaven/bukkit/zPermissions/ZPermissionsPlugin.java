@@ -24,6 +24,7 @@ import static org.tyrannyofheaven.bukkit.util.ToHMessageUtils.colorize;
 import static org.tyrannyofheaven.bukkit.util.ToHMessageUtils.sendMessage;
 import static org.tyrannyofheaven.bukkit.util.ToHStringUtils.hasText;
 import static org.tyrannyofheaven.bukkit.util.command.reader.CommandReader.abortBatchProcessing;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,6 +40,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -90,7 +92,9 @@ import org.tyrannyofheaven.bukkit.zPermissions.model.PermissionRegion;
 import org.tyrannyofheaven.bukkit.zPermissions.model.PermissionWorld;
 import org.tyrannyofheaven.bukkit.zPermissions.model.UuidDisplayNameCache;
 import org.tyrannyofheaven.bukkit.zPermissions.region.FactionsRegionStrategy;
+import org.tyrannyofheaven.bukkit.zPermissions.region.FactoidRegionStrategy;
 import org.tyrannyofheaven.bukkit.zPermissions.region.RegionStrategy;
+import org.tyrannyofheaven.bukkit.zPermissions.region.ResidenceRegionStrategy;
 import org.tyrannyofheaven.bukkit.zPermissions.region.WorldGuardRegionStrategy;
 import org.tyrannyofheaven.bukkit.zPermissions.service.DefaultPlayerPrefixHandler;
 import org.tyrannyofheaven.bukkit.zPermissions.service.PlayerPrefixHandler;
@@ -643,7 +647,7 @@ public class ZPermissionsPlugin extends JavaPlugin implements ZPermissionsCore, 
             // Make sure everyone currently online has permissions
             // NB Do in foreground
             for (Player player : Bukkit.getOnlinePlayers()) {
-                refreshPlayer(player.getPlayer().getUniqueId(), RefreshCause.GROUP_CHANGE);
+                refreshPlayer(player.getUniqueId(), RefreshCause.GROUP_CHANGE);
             }
 
             // Start auto-refresh task, if one is configured
@@ -673,8 +677,15 @@ public class ZPermissionsPlugin extends JavaPlugin implements ZPermissionsCore, 
         // WorldGuard
         regionStrategy = new WorldGuardRegionStrategy(this, getZPermissionsCore());
         strategies.put(regionStrategy.getName(), regionStrategy);
+
+        // Additional region managers are registered here.
+        regionStrategy = new ResidenceRegionStrategy(this, getZPermissionsCore());
+        strategies.put(regionStrategy.getName(), regionStrategy);
         
         regionStrategy = new FactionsRegionStrategy(this, getZPermissionsCore());
+        strategies.put(regionStrategy.getName(), regionStrategy);
+
+        regionStrategy = new FactoidRegionStrategy(this, getZPermissionsCore());
         strategies.put(regionStrategy.getName(), regionStrategy);
 
         // Run through list in preference order
@@ -729,7 +740,7 @@ public class ZPermissionsPlugin extends JavaPlugin implements ZPermissionsCore, 
         player.removeMetadata(PLAYER_METADATA_KEY, this);
 
         // Remove dynamic permission and recalculate, if wanted
-        final String permName = DYNAMIC_PERMISSION_PREFIX + player.getPlayer().getUniqueId().toString();
+        final String permName = DYNAMIC_PERMISSION_PREFIX + player.getUniqueId().toString();
         Bukkit.getPluginManager().removePermission(permName);
         if (recalculate) {
             for (Permissible p : Bukkit.getPluginManager().getPermissionSubscriptions(permName)) {
@@ -756,11 +767,11 @@ public class ZPermissionsPlugin extends JavaPlugin implements ZPermissionsCore, 
             // Kick the player, if configured to do so
             if (kickOnError && (kickOpsOnError || !player.isOp())) {
                 // Probably safer to do this synchronously
-                final UUID playerUuid = player.getPlayer().getUniqueId();
+                final UUID playerUuid = player.getUniqueId();
                 getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
                     @Override
                     public void run() {
-                        Player player = getServer().getPlayer(playerUuid.toString());
+                        Player player = getServer().getPlayer(playerUuid);
                         if (player != null)
                             player.kickPlayer("Error determining your permissions");
                     }
@@ -775,7 +786,7 @@ public class ZPermissionsPlugin extends JavaPlugin implements ZPermissionsCore, 
         
         // Fire off event if requested and changed
         if (eventCause != null && changed) {
-            final UUID playerUuid = player.getPlayer().getUniqueId();
+            final UUID playerUuid = player.getUniqueId();
             // Translate RefreshEvent to ZPermissionsPlayerPermissionsChangeEvent.Cause
             // Kinda dumb, but I don't want internal code to depend on the event class.
             final ZPermissionsPlayerUpdateEvent.Cause cause;
@@ -796,7 +807,7 @@ public class ZPermissionsPlugin extends JavaPlugin implements ZPermissionsCore, 
             Bukkit.getScheduler().runTask(this, new Runnable() {
                 @Override
                 public void run() {
-                    Player player = Bukkit.getPlayer(playerUuid.toString());
+                    Player player = Bukkit.getPlayer(playerUuid);
                     if (player != null) {
                         ZPermissionsPlayerUpdateEvent event = new ZPermissionsPlayerUpdateEvent(player, cause);
                         Bukkit.getPluginManager().callEvent(event);
@@ -819,7 +830,7 @@ public class ZPermissionsPlugin extends JavaPlugin implements ZPermissionsCore, 
         final Set<String> regions = getRegions(location, player);
 
         // Fetch existing state
-        final String permName = DYNAMIC_PERMISSION_PREFIX + player.getPlayer().getUniqueId().toString();
+        final String permName = DYNAMIC_PERMISSION_PREFIX + player.getUniqueId().toString();
         Permission perm = Bukkit.getPluginManager().getPermission(permName);
 
         PlayerState playerState = getPlayerState(player);
@@ -848,7 +859,7 @@ public class ZPermissionsPlugin extends JavaPlugin implements ZPermissionsCore, 
             @Override
             public ResolverResult doInTransaction() throws Exception {
 //                fakeFailureChance();
-                return getResolver().resolvePlayer(player.getPlayer().getUniqueId(), world, regions);
+                return getResolver().resolvePlayer(player.getUniqueId(), world, regions);
             }
         }, true);
 
@@ -913,7 +924,7 @@ public class ZPermissionsPlugin extends JavaPlugin implements ZPermissionsCore, 
      */
     @Override
     public void refreshPlayer(UUID uuid, RefreshCause cause) {
-        Player player = Bukkit.getPlayer(uuid.toString());
+        Player player = Bukkit.getPlayer(uuid);
         if (player != null) {
             debug(this, "Refreshing player %s", player.getName());
             setBukkitPermissions(player, player.getLocation(), true, cause);
@@ -928,7 +939,7 @@ public class ZPermissionsPlugin extends JavaPlugin implements ZPermissionsCore, 
         debug(this, "Refreshing all online players");
         Set<UUID> toRefresh = new HashSet<>();
         for (Player player : Bukkit.getOnlinePlayers()) {
-            toRefresh.add(player.getPlayer().getUniqueId());
+            toRefresh.add(player.getUniqueId());
         }
         refreshTask.start(toRefresh);
     }
@@ -958,7 +969,7 @@ public class ZPermissionsPlugin extends JavaPlugin implements ZPermissionsCore, 
      */
     @Override
     public void refreshExpirations(UUID uuid) {
-        if (Bukkit.getPlayer(uuid.toString()) != null)
+        if (Bukkit.getPlayer(uuid) != null)
             refreshExpirations();
     }
 
@@ -974,7 +985,7 @@ public class ZPermissionsPlugin extends JavaPlugin implements ZPermissionsCore, 
         for (Player player : Bukkit.getOnlinePlayers()) {
             PlayerState playerState = getPlayerState(player);
             if (playerState == null || playerState.getGroups().contains(groupName)) {
-                toRefresh.add(player.getPlayer().getUniqueId());
+                toRefresh.add(player.getUniqueId());
             }
         }
         

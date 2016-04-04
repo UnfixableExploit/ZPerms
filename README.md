@@ -1,9 +1,3 @@
-# ZPerms (Fork of ZPermissions)
-Aims to use the latest versions of (Vault, MassiveCraft-Factions, WorldGuard + Other)
-Going to try to make faster but less intensive but is good as is :) BETA SUPPORT 1.9 :) needs to be tested
-
-
-
 # zPermissions &mdash; A Superperms plugin for Bukkit #
 
 zPermissions is primarily an SQL database-backed Superperms (aka Bukkit permissions) implementation. It also supports flat-file storage. Notable features are: multi-world support, ranks with multiple tracks/ladders, group inheritance of arbitrary depth (within reason), and optional region-specific permissions using [WorldGuard](http://dev.bukkit.org/server-mods/worldguard/) regions, [Residence](http://dev.bukkit.org/server-mods/residence/) residences, [Factions](http://dev.bukkit.org/bukkit-plugins/factions/) territories, or [Factoid](http://dev.bukkit.org/bukkit-plugins/factoid/) lands.

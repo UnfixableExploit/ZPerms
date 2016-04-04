@@ -33,7 +33,6 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.tyrannyofheaven.bukkit.zPermissions.ZPermissionsCore;
@@ -75,7 +74,7 @@ public class ExpirationRefreshHandler implements Runnable {
         membershipQueue.clear();
         Date now = new Date();
         for (Player player : Bukkit.getOnlinePlayers()) {
-            for (Membership membership : storageStrategy.getPermissionService().getGroups(player.getPlayer().getUniqueId())) {
+            for (Membership membership : storageStrategy.getPermissionService().getGroups(player.getUniqueId())) {
                 if (membership.getExpiration() != null && membership.getExpiration().after(now)) {
                     membershipQueue.add(membership);
                 }
@@ -118,7 +117,7 @@ public class ExpirationRefreshHandler implements Runnable {
                 @Override
                 public void run() {
                     for (Membership membership : expired) {
-                        Player player = Bukkit.getPlayer(membership.getUuid().toString());
+                        Player player = Bukkit.getPlayer(membership.getUuid());
                         if (player != null && player.hasPermission("zpermissions.notify.self.expiration")) {
                             sendMessage(player, colorize("{YELLOW}Your membership to {DARK_GREEN}%s{YELLOW} has expired."), membership.getGroup().getDisplayName());
                         }

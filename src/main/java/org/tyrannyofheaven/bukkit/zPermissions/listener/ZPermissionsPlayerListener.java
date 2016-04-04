@@ -18,7 +18,6 @@ package org.tyrannyofheaven.bukkit.zPermissions.listener;
 import static org.tyrannyofheaven.bukkit.util.ToHLoggingUtils.debug;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -56,7 +55,7 @@ public class ZPermissionsPlayerListener implements Listener {
     public void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
         if (event.getLoginResult() == AsyncPlayerPreLoginEvent.Result.ALLOWED) {
             // Update display name
-            core.updateDisplayName(((Entity) event).getUniqueId(), event.getName());
+            core.updateDisplayName(event.getUniqueId(), event.getName());
         }
     }
 

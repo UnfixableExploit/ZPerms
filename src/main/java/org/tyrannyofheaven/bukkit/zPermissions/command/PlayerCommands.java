@@ -254,11 +254,11 @@ public class PlayerCommands extends CommonCommands {
         sendMessage(sender, colorize("{GOLD}%s{YELLOW} set to {GREEN}%s{YELLOW} for {AQUA}%s{YELLOW} for %d second%s"), permission, value == null ? Boolean.TRUE : value, player.getName(), timeout, timeout == 1 ? "" : "s");
     }
 
-    @Command(value="has", description="Bukkit hasPermission() check")
+    @SuppressWarnings("deprecation")
+	@Command(value="has", description="Bukkit hasPermission() check")
     @Require("zpermissions.player.view")
     public void has(CommandSender sender, @Session("entityName") String playerName, @Option("permission") String permission) {
-        @SuppressWarnings("deprecation")
-		Player player = Bukkit.getPlayer(playerName);
+        Player player = Bukkit.getPlayer(playerName);
         if (player == null) {
             sendMessage(sender, colorize("{RED}Player is not online."));
             abortBatchProcessing();
@@ -283,6 +283,23 @@ public class PlayerCommands extends CommonCommands {
     @Require("zpermissions.player.manage")
     public void clone(CommandSender sender, @Session("entityName") String playerName, @Option("new-player") String destination) {
         super.clone(sender, playerName, destination, false);
+    }
+
+    @SuppressWarnings("deprecation")
+	@Command(value="refresh", description="Bukkit hasPermission() check")
+    @Require("zpermissions.player.refresh")
+    public void refresh(CommandSender sender, @Session("entityName") String playerName) {
+        Player player = Bukkit.getPlayer(playerName);
+        if (player == null) {
+            sendMessage(sender, colorize("{RED}Player is not online."));
+            abortBatchProcessing();
+            return;
+        }
+
+        core.invalidateMetadataCache(player.getName(), player.getUniqueId(), false);
+        core.refreshPlayer(player.getUniqueId(), RefreshCause.COMMAND);
+        core.refreshExpirations(player.getUniqueId());
+        sendMessage(sender, colorize("{GREEN}Permissions refreshed for %s"), player.getName());
     }
 
 }

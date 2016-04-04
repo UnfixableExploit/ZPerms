@@ -1,10 +1,10 @@
 config-version: 19
 
-database-support: true
+database-support: false
 
 database-read-only: false
 
-region-support: true
+region-support: false
 
 group-permission: 'group.%s'
 
@@ -34,7 +34,7 @@ kick-on-error: true
 
 kick-ops-on-error: false
 
-auto-refresh-interval: -1
+auto-refresh-interval: 1
 
 auto-refresh-force: false
 

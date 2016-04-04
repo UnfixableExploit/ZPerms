@@ -15,65 +15,65 @@ public abstract class PermissionCompatibility extends Permission {
         this.resolver = resolver;
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public boolean playerHas(String world, String player, String permission) {
-        @SuppressWarnings("deprecation")
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player);
         if (offlinePlayer == null) return false;
         return playerHas(world, offlinePlayer, permission);
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public boolean playerAdd(String world, String player, String permission) {
-        @SuppressWarnings("deprecation")
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player);
         if (offlinePlayer == null) return false;
         return playerAdd(world, offlinePlayer, permission);
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public boolean playerRemove(String world, String player, String permission) {
-        @SuppressWarnings("deprecation")
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player);
         if (offlinePlayer == null) return false;
         return playerRemove(world, offlinePlayer, permission);
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public boolean playerInGroup(String world, String player, String group) {
-        @SuppressWarnings("deprecation")
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player);
         if (offlinePlayer == null) return false;
         return playerInGroup(world, offlinePlayer, group);
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public boolean playerAddGroup(String world, String player, String group) {
-        @SuppressWarnings("deprecation")
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player);
         if (offlinePlayer == null) return false;
         return playerAddGroup(world, offlinePlayer, group);
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public boolean playerRemoveGroup(String world, String player, String group) {
-        @SuppressWarnings("deprecation")
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player);
         if (offlinePlayer == null) return false;
         return playerRemoveGroup(world, offlinePlayer, group);
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public String[] getPlayerGroups(String world, String player) {
-        @SuppressWarnings("deprecation")
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player);
         if (offlinePlayer == null) return new String[] { resolver.getDefaultGroup() };
         return getPlayerGroups(world, offlinePlayer);
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public String getPrimaryGroup(String world, String player) {
-        @SuppressWarnings("deprecation")
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player);
         if (offlinePlayer == null) return resolver.getDefaultGroup();
         return getPrimaryGroup(world, offlinePlayer);
