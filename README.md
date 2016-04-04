@@ -1,4 +1,6 @@
-# zPermissions &mdash; A Superperms plugin for Bukkit #
+# ZPerms #
+
+ZPerms is a forked version of zpermissions that aims to stay updated to the latest version of spigot/paper/taco (Thats MC1.9.2) 
 
 zPermissions is primarily an SQL database-backed Superperms (aka Bukkit permissions) implementation. It also supports flat-file storage. Notable features are: multi-world support, ranks with multiple tracks/ladders, group inheritance of arbitrary depth (within reason), and optional region-specific permissions using [WorldGuard](http://dev.bukkit.org/server-mods/worldguard/) regions, [Residence](http://dev.bukkit.org/server-mods/residence/) residences, [Factions](http://dev.bukkit.org/bukkit-plugins/factions/) territories, or [Factoid](http://dev.bukkit.org/bukkit-plugins/factoid/) lands.
 
